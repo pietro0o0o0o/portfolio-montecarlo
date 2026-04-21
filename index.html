@@ -450,9 +450,26 @@ function runCorr(){
 
 function runAll(){runMC();if(document.getElementById('panel-frontier').classList.contains('active'))runFrontier();if(document.getElementById('panel-risk').classList.contains('active'))runRisk();if(document.getElementById('panel-corr').classList.contains('active'))runCorr();}
 
-const origSwitch=window.switchTab;
+function runAll(){
+  runMC();
+  runFrontier();
+  runRisk();
+  runCorr();
+}
+
 window.switchTab=function(id){
-  origSwitch(id);
+  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',['mc','frontier','risk','corr'][i]===id));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  if(id==='frontier')runFrontier();
+  if(id==='risk')runRisk();
+  if(id==='corr')runCorr();
+};
+
+buildSidebar();
+updateHeader();
+runMC();
+runCorr();
   if(id==='frontier')runFrontier();
   if(id==='risk')runRisk();
   if(id==='corr')runCorr();
