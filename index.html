@@ -448,32 +448,17 @@ function runCorr(){
   mk('assetScatter','scatter',{datasets:ASSETS.map(a=>({label:a.name,data:[{x:a.sigma*100,y:a.mu*100}],backgroundColor:a.color,pointRadius:10,pointStyle:'circle'}))},{responsive:true,maintainAspectRatio:false,animation:{duration:400},plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`${c.dataset.label}: ret ${c.parsed.y.toFixed(0)}% | vol ${c.parsed.x.toFixed(0)}%`},backgroundColor:'#181818',borderColor:'#333',borderWidth:1,bodyColor:'#f0ede8'},datalabels:{display:false}},scales:{x:{title:{display:true,text:'Annual volatility (%)',color:'#444',font:{size:10}},ticks:{color:'#444',callback:v=>v+'%'},grid:{color:'rgba(255,255,255,0.03)'},border:{color:'#222'},min:0},y:{title:{display:true,text:'Annual return (%)',color:'#444',font:{size:10}},ticks:{color:'#444',callback:v=>v+'%'},grid:{color:'rgba(255,255,255,0.03)'},border:{color:'#222'},min:0}}});
 }
 
-function runAll(){runMC();if(document.getElementById('panel-frontier').classList.contains('active'))runFrontier();if(document.getElementById('panel-risk').classList.contains('active'))runRisk();if(document.getElementById('panel-corr').classList.contains('active'))runCorr();}
+function runAll(){runMC();runFrontier();runRisk();runCorr();}
 
-function runAll(){
-  runMC();
-  runFrontier();
-  runRisk();
-  runCorr();
-}
-
-window.switchTab=function(id){
+function switchTab(id){
   document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',['mc','frontier','risk','corr'][i]===id));
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   document.getElementById('panel-'+id).classList.add('active');
   if(id==='frontier')runFrontier();
   if(id==='risk')runRisk();
   if(id==='corr')runCorr();
-};
-
-buildSidebar();
-updateHeader();
-runMC();
-runCorr();
-  if(id==='frontier')runFrontier();
-  if(id==='risk')runRisk();
-  if(id==='corr')runCorr();
-};
+  if(id==='mc')runMC();
+}
 
 buildSidebar();
 updateHeader();
