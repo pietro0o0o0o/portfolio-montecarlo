@@ -90,10 +90,11 @@ def monte_carlo(weights, mean_returns, cov_matrix, last_prices, n_sim, horizon):
     L = np.linalg.cholesky(cov_matrix)
     paths = np.zeros((n_sim, horizon + 1))
     paths[:, 0] = port_value
+    daily_ret_arr = np.array(daily_ret)
     for t in range(1, horizon + 1):
         z = np.random.standard_normal((n_sim, len(weights)))
         corr_z = z @ L.T
-        asset_rets = daily_ret + corr_z
+        asset_rets = daily_ret_arr + corr_z
         port_ret = asset_rets @ weights
         paths[:, t] = paths[:, t - 1] * (1 + port_ret)
     return paths
